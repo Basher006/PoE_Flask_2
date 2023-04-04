@@ -117,29 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAMMOAADDDgAAAAAAAAAA
-        AAA4GRr/OBka/zgZGv84GRr/OBka/zgZGv84GRr/OBka/zgZGv84GRr/OBka/zgZGv84GRr/OBka/zgZ
-        Gv84GRr/OBka/39YP/9/WD//f1g//7x4S/+8eEv/AAD//wAA//8AAP//AAD//7x4S/+8eEv/f1g//39Y
-        P/9/WD//OBka/zgZGv9/WD//f1g///+sjv/MfF//KCjB/wAA//8AAP//AAD//zU4//8AAP//zHxf///c
-        xP9/WD//f1g//zgZGv84GRr/f1g//39YP///rI7/KCjB/wAA//81OP//NTj//zU4////////NTj//8x8
-        X///3MT/f1g//39YP/84GRr/OBka/39YP/9/WD///6yO/ygowf81OP//AAD//3V1//91df//////////
-        ///MfF///6yO/39YP/9/WD//OBka/zgZGv9/WD//f1g//7x4S///rI7/NTj//3V1//91df//dXX//wAA
-        //8AAP/////////cxP9/WD//f1g//zgZGv84GRr/f1g//39YP/9/WD/////////cxP8AAP//NTj//wAA
-        //8AAP/////////cxP9/WD//f1g//39YP/84GRr/OBka/39YP/9/WD//f1g//39YP///3MT//9zE/wAA
-        //8AAP////////+sjv9/WD//f1g//39YP/9/WD//OBka/zgZGv9/WD//f1g//39YP/9/WD//f1g////c
-        xP/MfF//vHhL//////9/WD//f1g//39YP/9/WD//f1g//zgZGv84GRr/f1g//39YP/9/WD//f1g//39Y
-        P///3MT/zHxf/7x4S///////f1g//39YP/9/WD//f1g//39YP/84GRr/OBka/39YP/9/WD//f1g//39Y
-        P/9/WD///6yO/8x8X/+8eEv//////39YP/9/WD//f1g//39YP/9/WD//OBka/zgZGv9/WD//f1g//39Y
-        P/9/WD//f1g///+sjv/MfF//vHhL//////9/WD//f1g//39YP/9/WD//f1g//zgZGv84GRr/f1g//39Y
-        P/9/WD//f1g///+sjv/MfF//zHxf/8x8X/+8eEv/vHhL/39YP/9/WD//f1g//39YP/84GRr/OBka/39Y
-        P/9/WD//f1g//39YP///3MT//6yO///cxP//3MT////////cxP9/WD//f1g//39YP/9/WD//OBka/zgZ
-        Gv9/WD//f1g//39YP/9/WD//f1g//39YP/9/WD//f1g//39YP/9/WD//f1g//39YP/9/WD//f1g//zgZ
-        Gv84GRr/OBka/zgZGv84GRr/OBka/zgZGv84GRr/OBka/zgZGv84GRr/OBka/zgZGv84GRr/OBka/zgZ
-        Gv84GRr/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAA==
-</value>
-  </data>
 </root>

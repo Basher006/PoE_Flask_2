@@ -31,12 +31,15 @@ namespace Drinker
 
         public static Thread Form1Thread;
         public static Thread Form2Thread;
+        public static Thread OverlayThread;
         public static bool Run = false;
 
 
         private static RECT screen_rect = new RECT();
         private static Bitmap screen_bm;
         private static Mat screen;
+        private static bool gameWindowIsActive;
+        private static bool gameWindowIsActive_old;
 
         public static bool debug = false;
         public static bool prt = true;
@@ -48,6 +51,13 @@ namespace Drinker
 
             BotFW.BotFW.AddHook(Key.F4, StartStop, true);
             Form2ThreadStart();
+            OverlayThreadStart();
+
+            Thread.Sleep(200); // wait forms loaded (~60ms)
+
+            bool chekBoxIsCheked = (bool)GUIRuner.form2.Invoke(GUIRuner.form2.getChangeOverlay);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.changeColor, chekBoxIsCheked);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.gameWindowActivChange, false);
 
             while (screen_rect.Width <= 0 && screen_rect.Height <= 0)
             {
@@ -67,6 +77,7 @@ namespace Drinker
             screen_bm = new Bitmap(screen_rect.Width, screen_rect.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             screen = new Mat(screen_rect.Width, screen_rect.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
             ChekScreenRectAndUpdate(screen_rect);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.poeRectChange, screen_rect);
 
             FlasksData res;
 
@@ -76,11 +87,19 @@ namespace Drinker
             int UPS;
             string charHP;
             string charMP;
+            gameWindowIsActive = false;
+            gameWindowIsActive_old = false;
             while (true)
             {
                 ChekScreenRectAndUpdate(screen_rect);
                 BotFW.BotFW.GetScreen(screen_rect, screen_bm);
                 screen_bm.ToMat(screen);
+
+                gameWindowIsActive = PoeInteraction.GameWindowIsActive();
+                if (ChekGameWindowActivChange())
+                {
+                    OnGameWindowActivChange();
+                }
 
                 res = GrabFlasksData.GrabData(screen);
 
@@ -94,16 +113,21 @@ namespace Drinker
                     screen_bm.ToMat(screen);
                     //screen.Save("screen.png");
 
+                    gameWindowIsActive = PoeInteraction.GameWindowIsActive();
+                    if (ChekGameWindowActivChange())
+                    {
+                        OnGameWindowActivChange();
+                    }
 
                     // TODO
-                    // 1. add group update
-                    // 2. swith console write line to send for flask send method
-                    // 3. poe client integration
-                    // 4. perfactoring
+                    // 1. send poe rect to overlay
+                    // 2. overlay logic on\off overlay
+                    // 3. overlay text update chek overlay on
+                    // 4. hide overlay if poe not top window
 
 
                     res = GrabFlasksData.GrabData(screen);
-                    if (PoeInteraction.GameWindowIsActive())
+                    if (gameWindowIsActive)
                         FlasksUse.UseFlasks(res);
 
 
@@ -116,7 +140,7 @@ namespace Drinker
                     charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
                     charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
 
-                    GuiStart.form2.Invoke(GuiStart.form2.OnUpdateStatusBar, UPS, charHP, charMP);
+                    GUIRuner.form2.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
                 }
 
                 Thread.Sleep(100);
@@ -129,8 +153,8 @@ namespace Drinker
                 charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
                 charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
 
-                if (!GuiStart.form2.FormIsClosing)
-                    GuiStart.form2?.Invoke(GuiStart.form2.OnUpdateStatusBar, UPS, charHP, charMP); 
+                if (!GUIRuner.form2.FormIsClosing)
+                    GUIRuner.form2?.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP); 
             }
         }
 
@@ -146,7 +170,7 @@ namespace Drinker
                 {
                     Thread.Sleep(10);
                 }
-                while (FlaskSetup.Program.form1.Text != "Настройка банок")
+                while (FlaskSetup.Program.form1.Text != "Настройка банок") // Fix This!!!!
                 {
                     Thread.Sleep(10);
                 }
@@ -165,13 +189,17 @@ namespace Drinker
 
         public static void StartStop()
         {
+            
+
             if (screen_rect.Width <= 0 && screen_rect.Height <= 0)
                 return;
 
 
             Console.WriteLine("старт стоп");
             Run = !Run;
-            GuiStart.form2.Invoke(GuiStart.form2.OnStartStopChange, Run);
+
+            GUIRuner.form2.Invoke(GUIRuner.form2.OnStartStopChange, Run);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.textChange, Run);
 
             if (debug)
             {
@@ -185,7 +213,7 @@ namespace Drinker
             if (screen_rect.Width <= 0 && screen_rect.Height <= 0)
             {
                 Run = false;
-                GuiStart.form2.Invoke(GuiStart.form2.OnStartStopChange, Run);
+                GUIRuner.form2.Invoke(GUIRuner.form2.OnStartStopChange, Run);
                 return;
             }
                 
@@ -194,11 +222,20 @@ namespace Drinker
             screen_bm = new Bitmap(screen_rect.Width, screen_rect.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             screen = new Mat(screen_rect.Width, screen_rect.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
             ChekScreenRectAndUpdate(screen_rect);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.poeRectChange, screen_rect);
+
+        }
+
+        public static void OverlayThreadStart()
+        {
+            OverlayThread = new Thread(GUIRuner.OverlayFormRun);
+            OverlayThread.SetApartmentState(ApartmentState.STA);
+            OverlayThread.Start();
         }
 
         public static void Form2ThreadStart() 
         {
-            Form2Thread = new Thread(GuiStart.Run);
+            Form2Thread = new Thread(GUIRuner.MainFormRun);
             Form2Thread.SetApartmentState(ApartmentState.STA);
             Form2Thread.Start();
         }
@@ -231,9 +268,17 @@ namespace Drinker
                 screen_rect = scr_rect;
                 ChekScreenRectAndUpdate(screen_rect);
             }
+        }
 
-            
+        private static bool ChekGameWindowActivChange()
+        {
+            return gameWindowIsActive != gameWindowIsActive_old;
+        }
 
+        private static void OnGameWindowActivChange()
+        {
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.gameWindowActivChange, gameWindowIsActive);
+            gameWindowIsActive_old = gameWindowIsActive;
         }
     }
 }

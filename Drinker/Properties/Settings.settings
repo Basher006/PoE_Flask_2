@@ -5,5 +5,8 @@
     <Setting Name="WinPos" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">500, 501</Value>
     </Setting>
+    <Setting Name="ShowOverlay" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

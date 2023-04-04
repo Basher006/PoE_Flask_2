@@ -34,5 +34,17 @@ namespace Drinker.Properties {
                 this["WinPos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowOverlay {
+            get {
+                return ((bool)(this["ShowOverlay"]));
+            }
+            set {
+                this["ShowOverlay"] = value;
+            }
+        }
     }
 }

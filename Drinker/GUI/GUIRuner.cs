@@ -7,15 +7,24 @@ using System.Windows.Forms;
 
 namespace Drinker.GUI
 {
-    internal static class GuiStart
+    internal static class GUIRuner
     {
         public static Form2 form2 = new Form2();
-        public static void Run()
+        public static Overlay overlayForm = new Overlay();
+        public static void OverlayFormRun()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //form2 = new Form2();
             Application.Run(form2);
+        }
+
+        public static void MainFormRun()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            //form2 = new Form2();
+            Application.Run(overlayForm);
         }
     }
 }

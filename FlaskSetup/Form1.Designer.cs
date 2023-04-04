@@ -29,16 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.flasksScreen = new System.Windows.Forms.PictureBox();
+            this.flasksScreenIMG = new System.Windows.Forms.PictureBox();
             this.GetScreen_Button = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.Save_Button = new System.Windows.Forms.Button();
-            this.Cancel_Button = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.f4_groupBox = new GroupBoxEx();
             this.f4_minCD = new System.Windows.Forms.NumericUpDown();
             this.f4_percent = new System.Windows.Forms.NumericUpDown();
@@ -84,7 +77,14 @@
             this.label20 = new System.Windows.Forms.Label();
             this.f5_activate = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.flasksScreen)).BeginInit();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Save_Button = new System.Windows.Forms.Button();
+            this.Cancel_Button = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.flasksScreenIMG)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.f4_groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.f4_minCD)).BeginInit();
@@ -108,19 +108,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.f5_percentTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
-            // flasksScreen
+            // flasksScreenIMG
             // 
-            this.flasksScreen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.flasksScreenIMG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flasksScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.flasksScreen.Image = ((System.Drawing.Image)(resources.GetObject("flasksScreen.Image")));
-            this.flasksScreen.InitialImage = ((System.Drawing.Image)(resources.GetObject("flasksScreen.InitialImage")));
-            this.flasksScreen.Location = new System.Drawing.Point(129, 12);
-            this.flasksScreen.Name = "flasksScreen";
-            this.flasksScreen.Size = new System.Drawing.Size(544, 254);
-            this.flasksScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.flasksScreen.TabIndex = 0;
-            this.flasksScreen.TabStop = false;
+            this.flasksScreenIMG.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.flasksScreenIMG.Image = ((System.Drawing.Image)(resources.GetObject("flasksScreenIMG.Image")));
+            this.flasksScreenIMG.InitialImage = ((System.Drawing.Image)(resources.GetObject("flasksScreenIMG.InitialImage")));
+            this.flasksScreenIMG.Location = new System.Drawing.Point(129, 12);
+            this.flasksScreenIMG.Name = "flasksScreenIMG";
+            this.flasksScreenIMG.Size = new System.Drawing.Size(544, 254);
+            this.flasksScreenIMG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.flasksScreenIMG.TabIndex = 0;
+            this.flasksScreenIMG.TabStop = false;
             // 
             // GetScreen_Button
             // 
@@ -132,6 +132,7 @@
             this.GetScreen_Button.TabIndex = 1;
             this.GetScreen_Button.Text = "Обновить картинку =====>";
             this.GetScreen_Button.UseVisualStyleBackColor = false;
+            this.GetScreen_Button.Click += new System.EventHandler(this.GetScreen_Button_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -155,84 +156,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(544, 218);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.menuStrip1.Location = new System.Drawing.Point(534, 37);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(202, 24);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label5.Location = new System.Drawing.Point(44, 286);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(79, 20);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Условие";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.label6.Location = new System.Drawing.Point(24, 430);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 17);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Мин. Кд. (Сек)";
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.label7.Location = new System.Drawing.Point(44, 458);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(67, 20);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Группа";
-            // 
-            // Save_Button
-            // 
-            this.Save_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Save_Button.BackColor = System.Drawing.Color.PaleGreen;
-            this.Save_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Save_Button.Location = new System.Drawing.Point(585, 496);
-            this.Save_Button.Name = "Save_Button";
-            this.Save_Button.Size = new System.Drawing.Size(88, 32);
-            this.Save_Button.TabIndex = 7;
-            this.Save_Button.Text = "Save";
-            this.Save_Button.UseVisualStyleBackColor = false;
-            this.Save_Button.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // Cancel_Button
-            // 
-            this.Cancel_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel_Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.Cancel_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Cancel_Button.Location = new System.Drawing.Point(491, 496);
-            this.Cancel_Button.Name = "Cancel_Button";
-            this.Cancel_Button.Size = new System.Drawing.Size(88, 32);
-            this.Cancel_Button.TabIndex = 8;
-            this.Cancel_Button.Text = "Cancel";
-            this.Cancel_Button.UseVisualStyleBackColor = false;
-            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.label1.Location = new System.Drawing.Point(14, 391);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 34);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Хот кей фласки\r\n(в игре)";
             // 
             // f4_groupBox
             // 
@@ -283,6 +206,7 @@
             this.f4_percent.Size = new System.Drawing.Size(69, 20);
             this.f4_percent.TabIndex = 36;
             this.f4_percent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.f4_percent.ValueChanged += new System.EventHandler(this.activatePercentText_ValueChange);
             // 
             // f4_Keys
             // 
@@ -421,6 +345,7 @@
             this.f2_percent.Size = new System.Drawing.Size(69, 20);
             this.f2_percent.TabIndex = 27;
             this.f2_percent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.f2_percent.ValueChanged += new System.EventHandler(this.activatePercentText_ValueChange);
             // 
             // f2_Keys
             // 
@@ -559,6 +484,7 @@
             this.f3_percent.Size = new System.Drawing.Size(69, 20);
             this.f3_percent.TabIndex = 28;
             this.f3_percent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.f3_percent.ValueChanged += new System.EventHandler(this.activatePercentText_ValueChange);
             // 
             // f3_Keys
             // 
@@ -678,6 +604,7 @@
             this.f1_percent.Size = new System.Drawing.Size(69, 20);
             this.f1_percent.TabIndex = 10;
             this.f1_percent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.f1_percent.ValueChanged += new System.EventHandler(this.activatePercentText_ValueChange);
             // 
             // f1_minCD
             // 
@@ -840,6 +767,7 @@
             this.f5_percent.Size = new System.Drawing.Size(69, 20);
             this.f5_percent.TabIndex = 48;
             this.f5_percent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.f5_percent.ValueChanged += new System.EventHandler(this.activatePercentText_ValueChange);
             // 
             // f5_Keys
             // 
@@ -929,6 +857,84 @@
             this.label21.TabIndex = 53;
             this.label21.Text = "%";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip1.Location = new System.Drawing.Point(534, 37);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(202, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.label5.Location = new System.Drawing.Point(44, 286);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(79, 20);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Условие";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.label6.Location = new System.Drawing.Point(24, 430);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 17);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Мин. Кд. (Сек)";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.label7.Location = new System.Drawing.Point(44, 458);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(67, 20);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Группа";
+            // 
+            // Save_Button
+            // 
+            this.Save_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Save_Button.BackColor = System.Drawing.Color.PaleGreen;
+            this.Save_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Save_Button.Location = new System.Drawing.Point(585, 496);
+            this.Save_Button.Name = "Save_Button";
+            this.Save_Button.Size = new System.Drawing.Size(88, 32);
+            this.Save_Button.TabIndex = 7;
+            this.Save_Button.Text = "Save";
+            this.Save_Button.UseVisualStyleBackColor = false;
+            this.Save_Button.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // Cancel_Button
+            // 
+            this.Cancel_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Cancel_Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.Cancel_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Cancel_Button.Location = new System.Drawing.Point(491, 496);
+            this.Cancel_Button.Name = "Cancel_Button";
+            this.Cancel_Button.Size = new System.Drawing.Size(88, 32);
+            this.Cancel_Button.TabIndex = 8;
+            this.Cancel_Button.Text = "Cancel";
+            this.Cancel_Button.UseVisualStyleBackColor = false;
+            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.label1.Location = new System.Drawing.Point(14, 391);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 34);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Хот кей фласки\r\n(в игре)";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -943,7 +949,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.GetScreen_Button);
-            this.Controls.Add(this.flasksScreen);
+            this.Controls.Add(this.flasksScreenIMG);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -951,7 +957,7 @@
             this.Name = "Form1";
             this.Text = "Настройка банок";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.flasksScreen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.flasksScreenIMG)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.f4_groupBox.ResumeLayout(false);
             this.f4_groupBox.PerformLayout();
@@ -985,7 +991,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox flasksScreen;
+        private System.Windows.Forms.PictureBox flasksScreenIMG;
         private System.Windows.Forms.Button GetScreen_Button;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.MenuStrip menuStrip1;

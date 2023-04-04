@@ -3,15 +3,20 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Drinker.GUI
 {
     public partial class Form2 : Form
     {
-        public delegate void StartStopButtonChager(bool run);
-        public StartStopButtonChager OnStartStopChange;
+        public delegate void StartStopButtonChanger(bool run);
+        public StartStopButtonChanger OnStartStopChange;
         public delegate void UpdateStatusBarChanger(int UPS, string charHP, string charMP);
         public UpdateStatusBarChanger OnUpdateStatusBar;
+        public delegate void ChangeOverlay(bool checkBoxIsCheked);
+        public ChangeOverlay OnChangeOverlay;
+        public delegate bool GetChangeOverlay();
+        public GetChangeOverlay getChangeOverlay;
 
         public bool FormIsClosing = false;
 
@@ -37,6 +42,10 @@ namespace Drinker.GUI
             StartPosition = FormStartPosition.Manual;
             Left = Properties.Settings.Default.WinPos.X;
             Top = Properties.Settings.Default.WinPos.Y;
+            showOverlay_checkBox.Checked = Properties.Settings.Default.ShowOverlay;
+            getChangeOverlay = get_checkBox1_Checked;
+            //OnChangeOverlay?.Invoke(showOverlay_checkBox.Checked);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -51,6 +60,7 @@ namespace Drinker.GUI
         private void MainWindow_Closing(object sender, EventArgs e)
         {
             Properties.Settings.Default.WinPos = new Point(Left, Top);
+            Properties.Settings.Default.ShowOverlay = showOverlay_checkBox.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -88,6 +98,16 @@ namespace Drinker.GUI
         {
             FormIsClosing = true;
             System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            OnChangeOverlay?.Invoke(showOverlay_checkBox.Checked);
+        }
+
+        private bool get_checkBox1_Checked()
+        {
+            return showOverlay_checkBox.Checked;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BotFW.lib;
+using Emgu.CV;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -47,12 +49,17 @@ namespace FlaskSetup
         public delegate void DataNeedUpdate();
         public event DataNeedUpdate OnDataNeedUpdate;
 
-        private delegate void paintBorderlessGroupBox(object sender, PaintEventArgs p);
-        
-
         public GUIElements_FlaskSetUp[] guiFlasksElenents;
         public List<int> guiFlasksElenents_group1 = new List<int>();
         public List<int> guiFlasksElenents_group2 = new List<int>();
+
+
+
+        private delegate void paintBorderlessGroupBox(object sender, PaintEventArgs p);
+
+        private static readonly string FlaskScreenPath = "FlaskSetupScreen\\FlaskSetupScreen.png";
+
+
 
         private Color[] groupColors = new Color[] { Color.WhiteSmoke, Color.CornflowerBlue, Color.Orange }; //Color.PaleGoldenrod
 
@@ -77,6 +84,8 @@ namespace FlaskSetup
             Height = Properties.Settings.Default.WinPos.Height;
 
             Location = new Point(Properties.Settings.Default.WinPos.Left, Properties.Settings.Default.WinPos.Top);
+
+            LoadFlaskScreen();
         }
 
         private void SetFlaskGroups()
@@ -385,13 +394,43 @@ namespace FlaskSetup
             OnGroupSetupChange?.Invoke();
         }
 
-        //private void f1_minCD_KeyPress(object sender, KeyPressEventArgs e)
-        //{
-        //    char number = e.KeyChar;
-        //    if (!char.IsDigit(number) && number != 8 && number != 44) // цифры, клавиша BackSpace и запятая
-        //    {
-        //        e.Handled = true;
-        //    }
-        //}
+        private void FlaskScreenUpdate()
+        {
+            // screnn pos: 1050 292, 947, 217, 99
+            //             1080 306, 973, 230, 105
+            RECT gameRECT = BotFW.BotFW.GetGameRect("Path of Exile");
+            if (gameRECT.Width == 1920 && gameRECT.Height >= 1050)
+            {
+                RECT flaskRECT;
+                Bitmap newscreen;
+                if (gameRECT.Height == 1050)
+                {
+                    flaskRECT = new RECT(gameRECT.X + 292, 947, 217, 99);
+                     newscreen = new Bitmap(flaskRECT.Width, flaskRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                }
+                else
+                {
+                    flaskRECT = new RECT(gameRECT.X + 306, 973, 230, 105);
+                    newscreen = new Bitmap(flaskRECT.Width, flaskRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                }
+                BotFW.BotFW.GetScreen(flaskRECT, newscreen);
+                Mat assdf = newscreen.ToMat();
+                flasksScreenIMG.Image.Dispose();
+                assdf.Save("FlaskSetupScreen\\FlaskSetupScreen.png");
+                //newscreen.Save(FlaskScreenPath);
+                LoadFlaskScreen();
+            }
+        }
+
+        private void LoadFlaskScreen()
+        {
+            Bitmap flaskScreen = new Bitmap(FlaskScreenPath);
+            this.flasksScreenIMG.Image = flaskScreen;
+        }
+
+        private void GetScreen_Button_Click(object sender, EventArgs e)
+        {
+            FlaskScreenUpdate();
+        }
     }
 }

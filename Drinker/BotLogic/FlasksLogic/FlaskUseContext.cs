@@ -111,8 +111,10 @@ namespace Drinker.BotLogic
         private bool ChekState(FlasksData data)
         {
             var flaskState = data.FlasksState.ToArray()[flaskNumber-1];
-            if (flaskState <= FlasksMetrics.MINIMUM_STATE_PERCENT_WHEN_USE_FLASK)
+            if (flaskState <= FlasksMetrics.MINIMUM_STATE_PERCENT_WHEN_USE_FLASK && data.HP_isFinded && data.FS_isFinded)
+            {
                 return true;
+            }
             return false;
         }
 
