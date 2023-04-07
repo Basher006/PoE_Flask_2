@@ -101,7 +101,7 @@ namespace Drinker.BotLogic
         private bool ChekMP(FlasksData data)
         {
             int charMPpercent = CalcCharHP_percent(data.CharMP.Cur, data.CharMP.Max);
-            if (data.HP_isFinded && charMPpercent <= setUp.ActivatePercent && ChekState(data))
+            if (data.MP_isFinded && charMPpercent <= setUp.ActivatePercent && ChekState(data))
             {
                 return true;
             }

@@ -120,10 +120,9 @@ namespace Drinker
                     }
 
                     // TODO
-                    // 1. send poe rect to overlay
-                    // 2. overlay logic on\off overlay
-                    // 3. overlay text update chek overlay on
-                    // 4. hide overlay if poe not top window
+                    // 1. 
+
+                    // исправленна ошибка с использованием банок на ману с открытым инвентарем
 
 
                     res = GrabFlasksData.GrabData(screen);
