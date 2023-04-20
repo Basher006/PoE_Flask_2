@@ -8,7 +8,6 @@ using System.Threading;
 using Drinker.GUI;
 using Drinker.BotLogic;
 using System.Windows.Input;
-using System.Linq;
 using Drinker.BotLogic.GameClientContext;
 using System.Windows.Forms;
 
@@ -84,7 +83,6 @@ namespace Drinker
                 RiseMsgBoxWithGameClientRECTError(game_rect);
 
 
-
             FlasksData res;
 
             Stopwatch watch_stop;
@@ -109,7 +107,6 @@ namespace Drinker
                         OnGameWindowActivChange();
                     }
 
-
                     watch_stop = Stopwatch.StartNew();
                     while (Run)
                     {
@@ -132,7 +129,6 @@ namespace Drinker
                             // 2. определение енергощита,
                             // 3. возможность настраивать использование скилов
 
-
                             res = GrabFlasksData.GrabData(screen);
                             PoeLogReader.Update();
                             if (usePausa)
@@ -151,15 +147,12 @@ namespace Drinker
 
                             elapsedTime = watch_run.ElapsedMilliseconds;
                             UPS = (int)(1000 / elapsedTime);
-                            //Console.WriteLine($"UPS: {UPS}, Ms: {ElapsedTime}");
 
                             charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
                             charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
 
                             GUIRuner.form2.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
                         }
-
-
                     }
 
                     Thread.Sleep(100);
@@ -187,7 +180,7 @@ namespace Drinker
                 Form1Thread = new Thread(FlaskSetup.Program.Main);
                 Form1Thread.SetApartmentState(ApartmentState.STA);
                 Form1Thread.Start();
-                //Thread.Sleep(2000);
+
                 while (FlaskSetup.Program.form1 == null)
                 {
                     Thread.Sleep(10);
@@ -196,7 +189,6 @@ namespace Drinker
                 {
                     Thread.Sleep(10);
                 }
-                //Console.WriteLine(Poe_Flask_2.Program.form1);
                 FlaskSetup.Program.form1.OnGroupSetupChange += FlasksGroupsManager.GroupSetUpUpdate;
                 FlaskSetup.Program.form1.OnGroupSetupChange += FlasksUse.UpdateFlaskGroupes_forUpdate;
                 FlaskSetup.Program.form1.OnDataNeedUpdate += FlasksGroupsManager.DataUpdate;
@@ -211,12 +203,6 @@ namespace Drinker
 
         public static void StartStop()
         {
-            
-
-            //if (game_rect.Width <= 0 && game_rect.Height <= 0)
-            //    return;
-
-
             Console.WriteLine("старт стоп");
             Run = !Run;
 
@@ -257,7 +243,6 @@ namespace Drinker
             Form2Thread.SetApartmentState(ApartmentState.STA);
             Form2Thread.Start();
         }
-
 
         private static bool ChekGameWindowActivChange()
         {

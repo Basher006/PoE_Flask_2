@@ -1,8 +1,6 @@
 ﻿using Drinker.DataGrab;
-using BotFW.lib;
 using FlaskSetup;
 using System;
-using System.Windows.Input;
 using Timer = BotFW.lib.Timer;
 
 namespace Drinker.BotLogic

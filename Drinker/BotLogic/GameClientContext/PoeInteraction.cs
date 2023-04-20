@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace Drinker.BotLogic.GameClientContext
 {

@@ -3,12 +3,8 @@ using Emgu.CV;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using static FlaskSetup.Form1;
 
 namespace FlaskSetup
 {
@@ -66,9 +62,9 @@ namespace FlaskSetup
         public Form1()
         {
             InitializeComponent();
-            SetGUIElements_FlaskSetUp();    // 0.22
-            SetFlaskGroups();               // 0.22
-            SetDefloutOnDropBoxes();        // 0.99 !!!
+            SetGUIElements_FlaskSetUp();
+            SetFlaskGroups(); 
+            SetDefloutOnDropBoxes();
             FlasksSetupData LoadedData = SaveLoadData.TryLoadData();
             LoadDataToForm(LoadedData);
 
@@ -101,7 +97,6 @@ namespace FlaskSetup
                     guiFlasksElenents_group2.Add(flaskElement.FlaskNumber);
             }
             OnGroupSetupChange?.Invoke();
-            //Console.WriteLine($"gr1: {guiFlasksElenents_group1.Count}, gr2: {guiFlasksElenents_group2.Count}");
         }
 
         private void SetGUIElements_FlaskSetUp()
@@ -195,9 +190,8 @@ namespace FlaskSetup
             foreach (var item in guiFlasksElenents)
             {
                 item.ActivarionType.Items.AddRange(FlasksMetrics.ActivatorDropBoxValues);
-                item.ActivarionType.SelectedIndex = 0;  // 0.33 (+11)
-                //item.HotKey.Items.AddRange(FlasksMetrics.AlowedHotkeys_names);
-                item.HotKey.SelectedIndex = 0;          // 0.99 (+66)
+                item.ActivarionType.SelectedIndex = 0;
+                item.HotKey.SelectedIndex = 0;
 
                 item.Group.Items.AddRange(FlasksMetrics.GroupDropBoxValues);
                 item.Group.DrawItem += DrawDropBoxItem;
@@ -345,12 +339,10 @@ namespace FlaskSetup
             for (int i = 0; i < FlasksMetrics.FLASKS_COUNT; i++)
             {
                 saveData[i].ActivationType = guiFlasksElenents[i].ActivarionType.Text;
-                //saveData[i].ActivatePercent = int.Parse(guiFlasksElenents[i].ActivatePercentText.Text);
                 if (int.TryParse(guiFlasksElenents[i].ActivatePercentText.Text, out int i_result))
                     saveData[i].ActivatePercent = i_result;
                 else
                     guiFlasksElenents[i].ActivatePercentText.Text = "0";
-                //saveData[i].MinCD = float.Parse(guiFlasksElenents[i].MinCD.Text);
                 string text = guiFlasksElenents[i].MinCD.Text.Replace(".", ",");
                 if (float.TryParse(text, out float f_result))
                     saveData[i].MinCD = f_result;
@@ -361,7 +353,6 @@ namespace FlaskSetup
                 saveData[i].HotKey = guiFlasksElenents[i].HotKey.Text;
                 saveData[i].Group = guiFlasksElenents[i].Group.Text;
             }
-            //Console.WriteLine(this);
             SaveLoadData.SaveData(saveData);
             OnDataNeedUpdate?.Invoke();
             OnGroupSetupChange?.Invoke();
@@ -396,8 +387,6 @@ namespace FlaskSetup
 
         private void FlaskScreenUpdate()
         {
-            // screnn pos: 1050 292, 947, 217, 99
-            //             1080 306, 973, 230, 105
             RECT gameRECT = BotFW.BotFW.GetGameRect("Path of Exile");
             if (gameRECT.Width == 1920 && gameRECT.Height >= 1050)
             {
@@ -417,7 +406,6 @@ namespace FlaskSetup
                 Mat assdf = newscreen.ToMat();
                 flasksScreenIMG.Image.Dispose();
                 assdf.Save("FlaskSetupScreen\\FlaskSetupScreen.png");
-                //newscreen.Save(FlaskScreenPath);
                 LoadFlaskScreen();
             }
         }

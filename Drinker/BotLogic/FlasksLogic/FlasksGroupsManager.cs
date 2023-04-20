@@ -1,10 +1,5 @@
 ﻿using FlaskSetup;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Drinker.BotLogic
 {
@@ -28,7 +23,6 @@ namespace Drinker.BotLogic
 
         static FlasksGroupsManager()
         {
-            //data = SaveLoadData.TryLoadData();
             DataUpdate();
             SetGroupSetUp();
         }

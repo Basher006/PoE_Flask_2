@@ -3,11 +3,8 @@ using Drinker.Properties;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using static Drinker.GUI.Form2;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Drinker.GUI
 {
@@ -27,8 +24,6 @@ namespace Drinker.GUI
         public FormGetPOELogFilePath getPOELogFilePath;
         public delegate void UsePausaChange(bool usePausa);
         public UsePausaChange OnUsePausaChange;
-        //public delegate bool GetUsePausa();
-        //public GetUsePausa OnUsePausaChange;
 
         public bool FormIsClosing = false;
 
@@ -54,9 +49,7 @@ namespace Drinker.GUI
             InitializeComponent();
 
             OnStartStopChange = StartStopChange;
-            //SetLenghts();
             OnUpdateStatusBar = UpdateStatusBar;
-
 
             Closing += new CancelEventHandler(MainWindow_Closing);
 
@@ -66,16 +59,12 @@ namespace Drinker.GUI
             showOverlay_checkBox.Checked = Settings.Default.ShowOverlay;
             autoPayse_chekbox.Checked = Settings.Default.UsePausa;
             getChangeOverlay = get_checkBox1_Checked;
-            //OnUsePausaChange = Form2GetUsePausa;
             OnPauseChange = PauseChange;
             getPOELogFilePath = GetPOELogFilePath;
-
 
             Settings.Default.LogFilePath = "";
             Settings.Default.Save();
             TryLoadLogFilePath();
-            //OnChangeOverlay?.Invoke(showOverlay_checkBox.Checked);
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -83,7 +72,6 @@ namespace Drinker.GUI
             if (Program.Form1Thread == null || Program.Form1Thread.ThreadState != ThreadState.Running)
             {
                 Program.Form1ThreadStart();
-                //Program.StartStop();
             }
         }
 
@@ -185,11 +173,6 @@ namespace Drinker.GUI
         {
             return poeLogFilePath;
         }
-
-        //private bool Form2GetUsePausa()
-        //{
-        //    return usePausa;
-        //}
 
         private bool TryLoadLogFilePath()
         {

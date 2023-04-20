@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Drinker.BotLogic.GameClientContext
 {
@@ -11,7 +7,6 @@ namespace Drinker.BotLogic.GameClientContext
     {
         public delegate void ZoneWasChanged();
         public static ZoneWasChanged OnZoneWasChanged;
-
 
         private static readonly string[] zonesChangedText = { "You have entered", "Вы вошли в область" };
         private static readonly string[] needPauseZones = { "убежище", "Hideout" };
@@ -21,6 +16,7 @@ namespace Drinker.BotLogic.GameClientContext
 
         private static string _logFilePath;
         private static long initlogFileSize;
+
 
         public static void InintChek(string logFilePath)
         {
@@ -81,19 +77,16 @@ namespace Drinker.BotLogic.GameClientContext
                 if (finded_eng && !finded_rus)
                 {
                     lastZonechangedLine = lastZonechangedLine_eng;
-                    //lastZoneChangedText = lastZonechangedLine_eng;
                     return true;
                 }
                 else if (!finded_eng && finded_rus)
                 {
                     lastZonechangedLine = lastZonechangedLine_rus;
-                    //lastZoneChangedText = lastZonechangedLine_rus;
                     return true;
                 }
                 else if (finded_eng && finded_rus)
                 {
                     lastZonechangedLine = foundPos_eng > foundPos_rus ? lastZonechangedLine_eng : lastZonechangedLine_rus;
-                    //lastZoneChangedText = foundPos_eng > foundPos_rus ? lastZonechangedLine_eng : lastZonechangedLine_rus;
                     return true;
                 }
             }
@@ -109,7 +102,6 @@ namespace Drinker.BotLogic.GameClientContext
             {
                 if (logLines[i].Contains(zonesChangedText[1]))
                 {
-                    // zone changed!
                     foundPos = i;
                     lastZonechangedLine = logLines[i];
                     return true;
@@ -126,7 +118,6 @@ namespace Drinker.BotLogic.GameClientContext
             {
                 if (logLines[i].Contains(zonesChangedText[0]))
                 {
-                    // zone changed!
                     foundPos = i;
                     lastZonechangedLine = logLines[i];
                     return true;

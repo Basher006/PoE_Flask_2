@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Drinker.BotLogic.FlasksUse;
 
 namespace Drinker.BotLogic
 {
