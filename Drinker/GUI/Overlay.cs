@@ -1,16 +1,9 @@
 ﻿using BotFW.lib;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Drinker.GUI.Overlay;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Drinker.GUI
 {
@@ -81,7 +74,7 @@ namespace Drinker.GUI
                 Brush_paused = Brushes.Gray,
                 Text_on = "On",
                 Text_off = "Off",
-                Text_pause = "Paused",
+                Text_pause = "On (Paused)",
 
                 PoeGameRECT_H = 1050
             };
@@ -146,7 +139,7 @@ namespace Drinker.GUI
                 string text;
                 Brush brush;
 
-                if (!OverlayRePaintData.BotIsRun)
+                if (OverlayRePaintData.BotIsRun)
                 {
                     if (OverlayRePaintData.CharacterInPauseZone && usePausa)
                     {
@@ -155,14 +148,14 @@ namespace Drinker.GUI
                     }
                     else
                     {
-                        text = OverlayRePaintData.Text_off;
-                        brush = OverlayRePaintData.Brush_off;
+                        text = OverlayRePaintData.Text_on;
+                        brush = OverlayRePaintData.Brush_on;
                     }
                 }
                 else
                 {
-                    text = OverlayRePaintData.Text_on;
-                    brush = OverlayRePaintData.Brush_on;
+                    text = OverlayRePaintData.Text_off;
+                    brush = OverlayRePaintData.Brush_off;
                 }
                 
                 Point drawPoint = OverlayRePaintData.PoeGameRECT_H == 1050 ? TextPositionFor_1050 : TextPositionFor_1080;

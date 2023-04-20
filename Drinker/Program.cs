@@ -43,6 +43,7 @@ namespace Drinker
         private static bool gameWindowIsActive;
         private static bool gameWindowIsActive_old;
         private static bool gameWindowIsValidResalution;
+        private static bool usePausa = false;
 
         public static bool debug = false;
         public static bool prt = true;
@@ -64,6 +65,7 @@ namespace Drinker
             Thread.Sleep(200); // wait forms loaded (~60ms)
 
             bool chekBoxIsCheked = (bool)GUIRuner.form2.Invoke(GUIRuner.form2.getChangeOverlay);
+            GUIRuner.form2.OnUsePausaChange += UpdateUsePausa;
             GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.changeColor, chekBoxIsCheked);
             GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.gameWindowActivChange, false);
 
@@ -127,12 +129,21 @@ namespace Drinker
 
                             // TODO
                             // 1. Добавить возможность сохранять и загружать пресеты настроек. 
-                            // 2. Определение локации в которой персонаж находится и авто отключение макроса в хо\городе
+                            // 2. определение енергощита,
+                            // 3. возможность настраивать использование скилов
 
 
                             res = GrabFlasksData.GrabData(screen);
                             PoeLogReader.Update();
-                            Pause = PoeLogReader.characterIsInPauseZone;
+                            if (usePausa)
+                            {
+                                Pause = PoeLogReader.characterIsInPauseZone;
+                            }
+                            else
+                            {
+                                Pause = false;
+                            }
+                            
                             if (gameWindowIsActive && !Pause)
                                 FlasksUse.UseFlasks(res);
 
@@ -309,6 +320,11 @@ namespace Drinker
             }
             else
                 gameWindowIsValidResalution = false;
+        }
+
+        private static void UpdateUsePausa(bool useP)
+        {
+            usePausa = useP;
         }
     }
 }

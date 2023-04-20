@@ -72,16 +72,64 @@ namespace Drinker.BotLogic.GameClientContext
         private static bool TryGetLastZonechangedLine(string[] logLines, out string lastZonechangedLine)
         {
             lastZonechangedLine = "";
+
+            bool finded_eng = TryGetLastZonechangedLine_ENG(logLines, out string lastZonechangedLine_eng, out int foundPos_eng);
+            bool finded_rus = TryGetLastZonechangedLine_RUS(logLines, out string lastZonechangedLine_rus, out int foundPos_rus);
+
+            if (lastZonechangedLine_eng != lastZoneChangedText && lastZonechangedLine_rus != lastZoneChangedText)
+            {
+                if (finded_eng && !finded_rus)
+                {
+                    lastZonechangedLine = lastZonechangedLine_eng;
+                    //lastZoneChangedText = lastZonechangedLine_eng;
+                    return true;
+                }
+                else if (!finded_eng && finded_rus)
+                {
+                    lastZonechangedLine = lastZonechangedLine_rus;
+                    //lastZoneChangedText = lastZonechangedLine_rus;
+                    return true;
+                }
+                else if (finded_eng && finded_rus)
+                {
+                    lastZonechangedLine = foundPos_eng > foundPos_rus ? lastZonechangedLine_eng : lastZonechangedLine_rus;
+                    //lastZoneChangedText = foundPos_eng > foundPos_rus ? lastZonechangedLine_eng : lastZonechangedLine_rus;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool TryGetLastZonechangedLine_RUS(string[] logLines, out string lastZonechangedLine, out int foundPos)
+        {
+            lastZonechangedLine = "non";
+            foundPos = -1;
             for (int i = logLines.Length - 1; i >= 0; i--)
             {
-                foreach (string zoneChangedText in zonesChangedText) 
+                if (logLines[i].Contains(zonesChangedText[1]))
                 {
-                    if (logLines[i].Contains(zoneChangedText) && logLines[i] != lastZoneChangedText)
-                    {
-                        // zone changed!
-                        lastZonechangedLine = logLines[i];
-                        return true;
-                    }
+                    // zone changed!
+                    foundPos = i;
+                    lastZonechangedLine = logLines[i];
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool TryGetLastZonechangedLine_ENG(string[] logLines, out string lastZonechangedLine, out int foundPos)
+        {
+            lastZonechangedLine = "non";
+            foundPos = -1;
+            for (int i = logLines.Length - 1; i >= 0; i--)
+            {
+                if (logLines[i].Contains(zonesChangedText[0]))
+                {
+                    // zone changed!
+                    foundPos = i;
+                    lastZonechangedLine = logLines[i];
+                    return true;
                 }
             }
             return false;
@@ -99,7 +147,10 @@ namespace Drinker.BotLogic.GameClientContext
                     if (zonechangedText.Contains(zone))
                     {
                         if (!characterIsInPauseZone)
+                        {
                             characterIsInPauseZone = true;
+                            return;
+                        }
                     }
                     else if (characterIsInPauseZone)
                         characterIsInPauseZone = false;
@@ -126,7 +177,7 @@ namespace Drinker.BotLogic.GameClientContext
 
         private static string BytesArrayToString(byte[] bytes)
         {
-            return Encoding.Default.GetString(bytes);
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }
