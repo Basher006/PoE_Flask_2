@@ -35,6 +35,8 @@
             this.charMP_statusText = new System.Windows.Forms.Label();
             this.StartStop_button = new System.Windows.Forms.Button();
             this.showOverlay_checkBox = new System.Windows.Forms.CheckBox();
+            this.autoPayse_chekbox = new System.Windows.Forms.CheckBox();
+            this.POEPath_lable = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -55,7 +57,7 @@
             this.UPS_statusText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.UPS_statusText.AutoSize = true;
             this.UPS_statusText.BackColor = System.Drawing.Color.Silver;
-            this.UPS_statusText.Location = new System.Drawing.Point(12, 116);
+            this.UPS_statusText.Location = new System.Drawing.Point(12, 140);
             this.UPS_statusText.MinimumSize = new System.Drawing.Size(50, 0);
             this.UPS_statusText.Name = "UPS_statusText";
             this.UPS_statusText.Size = new System.Drawing.Size(53, 13);
@@ -67,7 +69,7 @@
             this.charHP_statusText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.charHP_statusText.AutoSize = true;
             this.charHP_statusText.BackColor = System.Drawing.Color.Silver;
-            this.charHP_statusText.Location = new System.Drawing.Point(72, 116);
+            this.charHP_statusText.Location = new System.Drawing.Point(72, 140);
             this.charHP_statusText.MinimumSize = new System.Drawing.Size(80, 0);
             this.charHP_statusText.Name = "charHP_statusText";
             this.charHP_statusText.Size = new System.Drawing.Size(81, 13);
@@ -79,7 +81,7 @@
             this.charMP_statusText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.charMP_statusText.AutoSize = true;
             this.charMP_statusText.BackColor = System.Drawing.Color.Silver;
-            this.charMP_statusText.Location = new System.Drawing.Point(159, 116);
+            this.charMP_statusText.Location = new System.Drawing.Point(159, 140);
             this.charMP_statusText.MinimumSize = new System.Drawing.Size(80, 0);
             this.charMP_statusText.Name = "charMP_statusText";
             this.charMP_statusText.Size = new System.Drawing.Size(82, 13);
@@ -103,7 +105,7 @@
             // 
             this.showOverlay_checkBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.showOverlay_checkBox.AutoSize = true;
-            this.showOverlay_checkBox.Location = new System.Drawing.Point(132, 93);
+            this.showOverlay_checkBox.Location = new System.Drawing.Point(132, 117);
             this.showOverlay_checkBox.Name = "showOverlay_checkBox";
             this.showOverlay_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.showOverlay_checkBox.Size = new System.Drawing.Size(105, 17);
@@ -112,11 +114,41 @@
             this.showOverlay_checkBox.UseVisualStyleBackColor = true;
             this.showOverlay_checkBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // autoPayse_chekbox
+            // 
+            this.autoPayse_chekbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoPayse_chekbox.AutoSize = true;
+            this.autoPayse_chekbox.Location = new System.Drawing.Point(128, 93);
+            this.autoPayse_chekbox.Name = "autoPayse_chekbox";
+            this.autoPayse_chekbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.autoPayse_chekbox.Size = new System.Drawing.Size(109, 17);
+            this.autoPayse_chekbox.TabIndex = 7;
+            this.autoPayse_chekbox.Text = "Авто пауза в ХО";
+            this.autoPayse_chekbox.UseVisualStyleBackColor = true;
+            this.autoPayse_chekbox.CheckedChanged += new System.EventHandler(this.autoPayse_chekbox_CheckedChanged);
+            // 
+            // POEPath_lable
+            // 
+            this.POEPath_lable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.POEPath_lable.AutoSize = true;
+            this.POEPath_lable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.POEPath_lable.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.POEPath_lable.Location = new System.Drawing.Point(15, 94);
+            this.POEPath_lable.MaximumSize = new System.Drawing.Size(117, 13);
+            this.POEPath_lable.MinimumSize = new System.Drawing.Size(117, 13);
+            this.POEPath_lable.Name = "POEPath_lable";
+            this.POEPath_lable.Size = new System.Drawing.Size(117, 13);
+            this.POEPath_lable.TabIndex = 8;
+            this.POEPath_lable.Text = "Указать путь к игре..";
+            this.POEPath_lable.Click += new System.EventHandler(this.POEPath_lable_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(249, 138);
+            this.Controls.Add(this.POEPath_lable);
+            this.Controls.Add(this.autoPayse_chekbox);
             this.Controls.Add(this.showOverlay_checkBox);
             this.Controls.Add(this.StartStop_button);
             this.Controls.Add(this.charMP_statusText);
@@ -143,5 +175,7 @@
         private System.Windows.Forms.Label charMP_statusText;
         private System.Windows.Forms.Button StartStop_button;
         private System.Windows.Forms.CheckBox showOverlay_checkBox;
+        private System.Windows.Forms.CheckBox autoPayse_chekbox;
+        private System.Windows.Forms.Label POEPath_lable;
     }
 }

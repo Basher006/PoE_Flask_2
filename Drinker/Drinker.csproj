@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{77F9E02D-957A-48C9-84CB-881423F55A62}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Drinker</RootNamespace>
     <AssemblyName>Drinker</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -51,6 +51,7 @@
     <Compile Include="BotLogic\FlasksLogic\FlasksUse.cs" />
     <Compile Include="BotLogic\FlasksLogic\FlaskUseContext.cs" />
     <Compile Include="BotLogic\GameClientContext\PoeInteraction.cs" />
+    <Compile Include="BotLogic\GameClientContext\PoeLogReader.cs" />
     <Compile Include="DataGrab\FlaskStateFinder.cs" />
     <Compile Include="DataGrab\GrabFlasksData.cs" />
     <Compile Include="DataGrab\NumbersFinder.cs" />

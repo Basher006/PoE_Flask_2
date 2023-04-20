@@ -10,6 +10,7 @@ using Drinker.BotLogic;
 using System.Windows.Input;
 using System.Linq;
 using Drinker.BotLogic.GameClientContext;
+using System.Windows.Forms;
 
 namespace Drinker
 {
@@ -33,13 +34,15 @@ namespace Drinker
         public static Thread Form2Thread;
         public static Thread OverlayThread;
         public static bool Run = false;
+        public static bool Pause = false;
 
 
-        private static RECT screen_rect = new RECT();
+        private static RECT game_rect = new RECT();
         private static Bitmap screen_bm;
         private static Mat screen;
         private static bool gameWindowIsActive;
         private static bool gameWindowIsActive_old;
+        private static bool gameWindowIsValidResalution;
 
         public static bool debug = false;
         public static bool prt = true;
@@ -47,7 +50,12 @@ namespace Drinker
         [STAThread]
         static void Main(string[] args)
         {
-
+            string poeLogPAth;
+            if (PoeInteraction.TryGetPOELogFolder(out poeLogPAth))
+            {
+                Console.WriteLine(poeLogPAth);
+            }
+            
 
             BotFW.BotFW.AddHook(Key.F4, StartStop, true);
             Form2ThreadStart();
@@ -59,25 +67,21 @@ namespace Drinker
             GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.changeColor, chekBoxIsCheked);
             GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.gameWindowActivChange, false);
 
-            while (screen_rect.Width <= 0 && screen_rect.Height <= 0)
-            {
-                if (debug)
-                {
-                    screen_rect = new RECT(1920, 0, 1920, 1050); // 1050
-                                                                 //screen_rect = new RECT(1920, 0, 1920, 1080); // 1080
-                }
-                else
-                {
-                    screen_rect = PoeInteraction.GetGameRect();
-                }
-                Thread.Sleep(100);
-            }
 
-            
-            screen_bm = new Bitmap(screen_rect.Width, screen_rect.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            screen = new Mat(screen_rect.Width, screen_rect.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
-            ChekScreenRectAndUpdate(screen_rect);
-            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.poeRectChange, screen_rect);
+
+            string poeLogFilePath = (string)GUIRuner.form2.Invoke(GUIRuner.form2.getPOELogFilePath);
+            PoeLogReader.OnZoneWasChanged += OnPauseChange;
+            PoeLogReader.InintChek(poeLogFilePath); 
+            Pause = PoeLogReader.characterIsInPauseZone;
+
+
+            UpdateScreenSize();
+            if (gameWindowIsValidResalution)
+                GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.poeRectChange, game_rect);
+            else
+                RiseMsgBoxWithGameClientRECTError(game_rect);
+
+
 
             FlasksData res;
 
@@ -91,27 +95,11 @@ namespace Drinker
             gameWindowIsActive_old = false;
             while (true)
             {
-                ChekScreenRectAndUpdate(screen_rect);
-                BotFW.BotFW.GetScreen(screen_rect, screen_bm);
-                screen_bm.ToMat(screen);
-
-                gameWindowIsActive = PoeInteraction.GameWindowIsActive();
-                if (ChekGameWindowActivChange())
+                if (gameWindowIsValidResalution)
                 {
-                    OnGameWindowActivChange();
-                }
-
-                res = GrabFlasksData.GrabData(screen);
-
-                watch_stop = Stopwatch.StartNew();
-                while (Run)
-                {
-                    watch_run = Stopwatch.StartNew();
-
-                    ChekScreenRectAndUpdate(screen_rect);
-                    BotFW.BotFW.GetScreen(screen_rect, screen_bm);
+                    BotFW.BotFW.GetScreen(game_rect, screen_bm);
                     screen_bm.ToMat(screen);
-                    //screen.Save("screen.png");
+                    res = GrabFlasksData.GrabData(screen);
 
                     gameWindowIsActive = PoeInteraction.GameWindowIsActive();
                     if (ChekGameWindowActivChange())
@@ -119,41 +107,65 @@ namespace Drinker
                         OnGameWindowActivChange();
                     }
 
-                    // TODO
-                    // 1. 
 
-                    // исправленна ошибка с использованием банок на ману с открытым инвентарем
+                    watch_stop = Stopwatch.StartNew();
+                    while (Run)
+                    {
+                        watch_run = Stopwatch.StartNew();
+
+                        if (gameWindowIsValidResalution)
+                        {
+                            BotFW.BotFW.GetScreen(game_rect, screen_bm);
+                            screen_bm.ToMat(screen);
+                            //screen.Save("screen.png");
+
+                            gameWindowIsActive = PoeInteraction.GameWindowIsActive();
+                            if (ChekGameWindowActivChange())
+                            {
+                                OnGameWindowActivChange();
+                            }
+
+                            // TODO
+                            // 1. Добавить возможность сохранять и загружать пресеты настроек. 
+                            // 2. Определение локации в которой персонаж находится и авто отключение макроса в хо\городе
 
 
-                    res = GrabFlasksData.GrabData(screen);
-                    if (gameWindowIsActive)
-                        FlasksUse.UseFlasks(res);
+                            res = GrabFlasksData.GrabData(screen);
+                            PoeLogReader.Update();
+                            Pause = PoeLogReader.characterIsInPauseZone;
+                            if (gameWindowIsActive && !Pause)
+                                FlasksUse.UseFlasks(res);
+
+                            watch_run.Stop();
+
+                            elapsedTime = watch_run.ElapsedMilliseconds;
+                            UPS = (int)(1000 / elapsedTime);
+                            //Console.WriteLine($"UPS: {UPS}, Ms: {ElapsedTime}");
+
+                            charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
+                            charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
+
+                            GUIRuner.form2.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
+                        }
 
 
-                    watch_run.Stop();
+                    }
 
-                    elapsedTime = watch_run.ElapsedMilliseconds;
-                    UPS = (int)(1000 / elapsedTime);
-                    //Console.WriteLine($"UPS: {UPS}, Ms: {ElapsedTime}");
+                    Thread.Sleep(100);
 
+                    elapsedTime = watch_stop.ElapsedMilliseconds;
+                    if (elapsedTime > 0)
+                        UPS = (int)(1000 / elapsedTime);
+                    else
+                        UPS = 0;
                     charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
                     charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
 
-                    GUIRuner.form2.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
+                    if (!GUIRuner.form2.FormIsClosing)
+                        GUIRuner.form2?.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
                 }
-
-                Thread.Sleep(100);
-
-                elapsedTime = watch_stop.ElapsedMilliseconds;
-                if (elapsedTime > 0)
-                    UPS = (int)(1000 / elapsedTime);
                 else
-                    UPS = 0;
-                charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
-                charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
-
-                if (!GUIRuner.form2.FormIsClosing)
-                    GUIRuner.form2?.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP); 
+                    Thread.Sleep(100);
             }
         }
 
@@ -190,39 +202,35 @@ namespace Drinker
         {
             
 
-            if (screen_rect.Width <= 0 && screen_rect.Height <= 0)
-                return;
+            //if (game_rect.Width <= 0 && game_rect.Height <= 0)
+            //    return;
 
 
             Console.WriteLine("старт стоп");
             Run = !Run;
 
-            GUIRuner.form2.Invoke(GUIRuner.form2.OnStartStopChange, Run);
-            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.textChange, Run);
-
             if (debug)
             {
-                screen_rect = new RECT(1920, 0, 1920, 1050); // 1050
+                game_rect = new RECT(1920, 0, 1920, 1050); // 1050
                 //screen_rect = new RECT(1920, 0, 1920, 1080); // 1080
             }
             else
             {
-                screen_rect = PoeInteraction.GetGameRect();
+                UpdateScreenSize();
+                if (!gameWindowIsValidResalution && Run)
+                {
+                    Run = false;
+                    RiseMsgBoxWithGameClientRECTError(game_rect);
+                }
+                else if (Run)
+                {
+                    GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.poeRectChange, game_rect);
+                }
+                game_rect = PoeInteraction.GetGameRect();
             }
-            if (screen_rect.Width <= 0 && screen_rect.Height <= 0)
-            {
-                Run = false;
-                GUIRuner.form2.Invoke(GUIRuner.form2.OnStartStopChange, Run);
-                return;
-            }
-                
 
-
-            screen_bm = new Bitmap(screen_rect.Width, screen_rect.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            screen = new Mat(screen_rect.Width, screen_rect.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
-            ChekScreenRectAndUpdate(screen_rect);
-            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.poeRectChange, screen_rect);
-
+            GUIRuner.form2.Invoke(GUIRuner.form2.OnStartStopChange, Run);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.textChange, Run);
         }
 
         public static void OverlayThreadStart()
@@ -239,35 +247,6 @@ namespace Drinker
             Form2Thread.Start();
         }
 
-        private static void ChekScreenRectAndUpdate(RECT scr_rect)
-        {
-            if ((ACCEPT_SCREEN_HEIGHT.Contains(scr_rect.Height) || ACCEPT_SCREEN_WIDTH.Contains(scr_rect.Width)) &&
-                (screen_bm.Width == scr_rect.Width || screen_bm.Height == scr_rect.Height) &&
-                (screen.Width == scr_rect.Width || screen.Height == scr_rect.Height))
-            {
-                return;
-            }
-            else if ((ACCEPT_SCREEN_HEIGHT.Contains(scr_rect.Height) && ACCEPT_SCREEN_WIDTH.Contains(scr_rect.Width)) &&
-                (screen_bm.Width != scr_rect.Width || screen_bm.Height != scr_rect.Height))
-            {
-                screen_bm = new Bitmap(scr_rect.Width, scr_rect.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            }
-            else if ((ACCEPT_SCREEN_HEIGHT.Contains(scr_rect.Height) && ACCEPT_SCREEN_WIDTH.Contains(scr_rect.Width)) &&
-                (screen.Width != scr_rect.Width || screen.Height != scr_rect.Height))
-            {
-                screen = new Mat(scr_rect.Width, scr_rect.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
-            }
-            else
-            {
-                while (!ACCEPT_SCREEN_HEIGHT.Contains(scr_rect.Height) || !ACCEPT_SCREEN_WIDTH.Contains(scr_rect.Width))
-                {
-                    scr_rect = PoeInteraction.GetGameRect();
-                    Thread.Sleep(200);
-                }
-                screen_rect = scr_rect;
-                ChekScreenRectAndUpdate(screen_rect);
-            }
-        }
 
         private static bool ChekGameWindowActivChange()
         {
@@ -278,6 +257,58 @@ namespace Drinker
         {
             GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.gameWindowActivChange, gameWindowIsActive);
             gameWindowIsActive_old = gameWindowIsActive;
+        }
+
+        private static void OnPauseChange()
+        {
+            GUIRuner.form2.Invoke(GUIRuner.form2.OnPauseChange, PoeLogReader.characterIsInPauseZone);
+            GUIRuner.overlayForm.Invoke(GUIRuner.overlayForm.onPauseChange, PoeLogReader.characterIsInPauseZone);
+        }
+
+        private static void RiseMsgBoxWithGameClientRECTError(RECT gameRECT)
+        {
+            string acceptScreenRes_w = "Высота окна (Height):\n";
+            for (int i = 0; i < ACCEPT_SCREEN_HEIGHT.Length; i++)
+            {
+                if (i == 0)
+                {
+                    acceptScreenRes_w += "-" + ACCEPT_SCREEN_HEIGHT[i];
+                }
+                else
+                    acceptScreenRes_w += "\n- " + ACCEPT_SCREEN_HEIGHT[i];
+            }
+
+            string acceptScreenRes_h = "Ширина окна (Width):\n";
+            for (int i = 0; i < ACCEPT_SCREEN_WIDTH.Length; i++)
+            {
+                if (i == 0)
+                {
+                    acceptScreenRes_h += "-" + ACCEPT_SCREEN_WIDTH[i];
+                }
+                else
+                    acceptScreenRes_h += "\n- " + ACCEPT_SCREEN_WIDTH[i];
+            }
+
+            MessageBox.Show($"Текущее разрешение клиента игры не потдерживается! ({gameRECT})\n\nУбедитесь что разрешение пое:\n{acceptScreenRes_w}\n\n{acceptScreenRes_h}", "ERROR");
+        }
+
+        private static void UpdateScreensSize(RECT gameRECT)
+        {
+            screen_bm = new Bitmap(gameRECT.Width, gameRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            screen = new Mat(gameRECT.Width, gameRECT.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
+        }
+
+        private static void UpdateScreenSize()
+        {
+            var gameRECT = PoeInteraction.GetGameRect();
+            if (PoeInteraction.GameWindowIsValideResolution(gameRECT))
+            {
+                UpdateScreensSize(gameRECT);
+                game_rect = gameRECT;
+                gameWindowIsValidResalution = true;
+            }
+            else
+                gameWindowIsValidResalution = false;
         }
     }
 }

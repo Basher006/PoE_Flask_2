@@ -19,10 +19,13 @@ namespace Drinker.GUI
     {
         public string Text_on;
         public string Text_off;
+        public string Text_pause;
         public Brush Brush_on;
         public Brush Brush_off;
+        public Brush Brush_paused;
         public bool OverlayOn;
         public bool GameWindowIsActive;
+        public bool CharacterInPauseZone;
         public bool BotIsRun;
 
         public int PoeGameRECT_H;
@@ -39,6 +42,8 @@ namespace Drinker.GUI
         public PoeRECTChange poeRectChange;
         public delegate void GameWindowActivChange(bool gameWindowIsActive);
         public GameWindowActivChange gameWindowActivChange;
+        public delegate void PauseChange(bool pause);
+        public PauseChange onPauseChange;
 
         public OverlayContext OverlayRePaintData;
 
@@ -47,6 +52,8 @@ namespace Drinker.GUI
         private Point TextPositionFor_1080 = new Point(10, 1040);
         private static readonly int DefloatPoeGameRECT_H = 1050;
         private static readonly int[] AcceptPoeGameRECTs = { 1050, 1080 };
+
+        private static bool usePausa = false;
 
         public Overlay()
         {
@@ -57,6 +64,8 @@ namespace Drinker.GUI
             textChange = label1_Paint_TextChange;
             poeRectChange = OnPoeRECTChange;
             gameWindowActivChange = OnGameClientActiveChange;
+            onPauseChange = OnCharacterZoneChange;
+            GUIRuner.form2.OnUsePausaChange += UpdateUsePausa;
 
             StartPosition = FormStartPosition.Manual;
             Left = 0;
@@ -66,23 +75,19 @@ namespace Drinker.GUI
             {
                 OverlayOn = true,
                 GameWindowIsActive = false,
+                CharacterInPauseZone = false,
                 Brush_on = Brushes.GreenYellow,
                 Brush_off = Brushes.Red,
+                Brush_paused = Brushes.Gray,
                 Text_on = "On",
                 Text_off = "Off",
+                Text_pause = "Paused",
 
                 PoeGameRECT_H = 1050
             };
 
             //OnOverlayChange(GUIRuner.form2.getChangeOverlay());
             //swith = false;
-        }
-
-        private void label1_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
-            //e.Graphics.DrawString("Какой то там текст\nа этот на строку ниже\nа этот ещё ниже, безумие", new Font("Arial", 12, FontStyle.Bold), Brushes.Black, new PointF(10, 10));
-            e.Graphics.DrawString("Какой то там текст\nа этот на строку ниже\nа этот ещё ниже, безумие", new Font("Arial", 12), Brushes.GreenYellow, new PointF(10, 10));
         }
 
         private void OnOverlayChange(bool checkBoxIsCheked)
@@ -94,6 +99,12 @@ namespace Drinker.GUI
         private void OnGameClientActiveChange(bool gameWindowIsActive)
         {
             OverlayRePaintData.GameWindowIsActive = gameWindowIsActive;
+            RePaint();
+        }
+
+        private void OnCharacterZoneChange(bool characterInPauseZone)
+        {
+            OverlayRePaintData.CharacterInPauseZone = characterInPauseZone;
             RePaint();
         }
 
@@ -132,12 +143,37 @@ namespace Drinker.GUI
             }
             else
             {
-                string text = OverlayRePaintData.BotIsRun ? OverlayRePaintData.Text_on : OverlayRePaintData.Text_off;
-                Brush brush = OverlayRePaintData.BotIsRun ? OverlayRePaintData.Brush_on : OverlayRePaintData.Brush_off;
+                string text;
+                Brush brush;
+
+                if (!OverlayRePaintData.BotIsRun)
+                {
+                    if (OverlayRePaintData.CharacterInPauseZone && usePausa)
+                    {
+                        text = OverlayRePaintData.Text_pause;
+                        brush = OverlayRePaintData.Brush_paused;
+                    }
+                    else
+                    {
+                        text = OverlayRePaintData.Text_off;
+                        brush = OverlayRePaintData.Brush_off;
+                    }
+                }
+                else
+                {
+                    text = OverlayRePaintData.Text_on;
+                    brush = OverlayRePaintData.Brush_on;
+                }
+                
                 Point drawPoint = OverlayRePaintData.PoeGameRECT_H == 1050 ? TextPositionFor_1050 : TextPositionFor_1080;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
                 g.DrawString(text, new Font("Arial", 12), brush, drawPoint);
             }
+        }
+
+        private void UpdateUsePausa(bool useP)
+        {
+            usePausa = useP;
         }
     }
 }

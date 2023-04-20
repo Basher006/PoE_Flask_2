@@ -39,16 +39,17 @@ namespace BotFW.lib
             GetWindowRect(Hwnd, out RECT rc);
             rc.Width -= rc.X; rc.Height -= rc.Y;
 
-            if (rc.Width != 1920)
+            if (rc.Width - rc.X != 1920)
             {
                 rc.Width -= 16;
                 rc.X += 8;
             }
-            if (rc.Height != 1080)
+            if (rc.Height - rc.Y != 1080)
             {
                 rc.Height -= 16;
                 rc.Y += 8;
             }
+            //rc.X = 0;
 
             return rc;
         }
