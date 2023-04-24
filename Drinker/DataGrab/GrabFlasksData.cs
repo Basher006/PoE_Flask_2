@@ -38,11 +38,17 @@ namespace Drinker.DataGrab
             ImagesSetup templates;
             if (screen.Height == 1050)
                 templates = NumbersTemplates.ImagesFor1050;
-            else
+            else if (screen.Height == 1080)
                 templates = NumbersTemplates.ImagesFor1080;
+            else 
+                templates = NumbersTemplates.ImagesFor983;
 
-            Mat hp_area = BotFW.BotFW.GetPartOfImage(screen, NumbersFinder.hp_rect);
-            Mat mp_area = BotFW.BotFW.GetPartOfImage(screen, NumbersFinder.mp_rect);
+
+            var hp_area_RECT = NumbersFinder.Get_Hp_ScreenArea(screen.Width, screen.Height);
+            var mp_area_RECT = NumbersFinder.Get_Mp_ScreenArea(screen.Width, screen.Height);
+
+            Mat hp_area = BotFW.BotFW.GetPartOfImage(screen, hp_area_RECT);
+            Mat mp_area = BotFW.BotFW.GetPartOfImage(screen, mp_area_RECT);
 
             FlasksData flasksData = new FlasksData
             {

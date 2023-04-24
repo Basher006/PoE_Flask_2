@@ -32,15 +32,18 @@ namespace Drinker.DataGrab
 
         private static readonly RECT flaskStateRECT_1050 = new RECT(290, 1042, 220, 1);
         private static readonly RECT flaskStateRECT_1080 = new RECT(306, 1073, 230, 1);
+        private static readonly RECT flaskStateRECT_983 = new RECT(273, 977, 205, 1);
 
         private static readonly MCvScalar flaskState_lower = new MCvScalar(100, 100, 100);
         private static readonly MCvScalar flaskState_upper = new MCvScalar(255, 255, 255);
 
         private static readonly int eachFlaskWidth_1050 = 44;
         private static readonly int eachFlaskWidth_1080 = 46;
+        private static readonly int eachFlaskWidth_983 = 41;
 
         private static readonly int maxFlaskStateLineWidth_1050 = 32;
         private static readonly int maxFlaskStateLineWidth_1080 = 34;
+        private static readonly int maxFlaskStateLineWidth_983 = 31;
 
 
 
@@ -55,11 +58,17 @@ namespace Drinker.DataGrab
                 flaskStateRECT = flaskStateRECT_1050;
                 maxFlaskStateLineWidth = maxFlaskStateLineWidth_1050;
             } 
-            else
+            else if (screen.Height == 1080)
             {
                 flaskStateRECT = flaskStateRECT_1080;
                 eachFlaskWidth = eachFlaskWidth_1080;
                 maxFlaskStateLineWidth = maxFlaskStateLineWidth_1080;
+            }
+            else
+            {
+                flaskStateRECT = flaskStateRECT_983;
+                eachFlaskWidth = eachFlaskWidth_983;
+                maxFlaskStateLineWidth = maxFlaskStateLineWidth_983;
             }
 
             var flaskStateArea_pixels = GetPixels(screen, flaskStateRECT);

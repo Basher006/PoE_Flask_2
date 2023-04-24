@@ -10,6 +10,7 @@ using Drinker.BotLogic;
 using System.Windows.Input;
 using Drinker.BotLogic.GameClientContext;
 using System.Windows.Forms;
+using Drinker.Properties;
 
 namespace Drinker
 {
@@ -25,10 +26,6 @@ namespace Drinker
     }
     internal class Program
     {
-        public static readonly int[] ACCEPT_SCREEN_HEIGHT = new int[] { 1050, 1080 };
-        public static readonly int[] ACCEPT_SCREEN_WIDTH = new int[] { 1920 };
-
-
         public static Thread Form1Thread;
         public static Thread Form2Thread;
         public static Thread OverlayThread;
@@ -42,7 +39,7 @@ namespace Drinker
         private static bool gameWindowIsActive;
         private static bool gameWindowIsActive_old;
         private static bool gameWindowIsValidResalution;
-        private static bool usePausa = false;
+        private static bool usePausa = Settings.Default.UsePausa;
 
         public static bool debug = false;
         public static bool prt = true;
@@ -263,29 +260,13 @@ namespace Drinker
 
         private static void RiseMsgBoxWithGameClientRECTError(RECT gameRECT)
         {
-            string acceptScreenRes_w = "Высота окна (Height):\n";
-            for (int i = 0; i < ACCEPT_SCREEN_HEIGHT.Length; i++)
+            string acceptScreenRess = "";
+            foreach (var scr_res in PoeInteraction.ACCEPT_SCREEN_RES)
             {
-                if (i == 0)
-                {
-                    acceptScreenRes_w += "-" + ACCEPT_SCREEN_HEIGHT[i];
-                }
-                else
-                    acceptScreenRes_w += "\n- " + ACCEPT_SCREEN_HEIGHT[i];
+                acceptScreenRess += $"{scr_res};\n";
             }
 
-            string acceptScreenRes_h = "Ширина окна (Width):\n";
-            for (int i = 0; i < ACCEPT_SCREEN_WIDTH.Length; i++)
-            {
-                if (i == 0)
-                {
-                    acceptScreenRes_h += "-" + ACCEPT_SCREEN_WIDTH[i];
-                }
-                else
-                    acceptScreenRes_h += "\n- " + ACCEPT_SCREEN_WIDTH[i];
-            }
-
-            MessageBox.Show($"Текущее разрешение клиента игры не потдерживается! ({gameRECT})\n\nУбедитесь что разрешение пое:\n{acceptScreenRes_w}\n\n{acceptScreenRes_h}", "ERROR");
+            MessageBox.Show($"Текущее разрешение клиента игры не потдерживается! ({gameRECT})\n\nУбедитесь что разрешение пое (размер скриншота через Alt+PrtSc):\n{acceptScreenRess}", "ERROR");
         }
 
         private static void UpdateScreensSize(RECT gameRECT)
@@ -296,11 +277,10 @@ namespace Drinker
 
         private static void UpdateScreenSize()
         {
-            var gameRECT = PoeInteraction.GetGameRect();
-            if (PoeInteraction.GameWindowIsValideResolution(gameRECT))
+            game_rect = PoeInteraction.GetGameRect();
+            if (PoeInteraction.GameWindowIsValideResolution(game_rect))
             {
-                UpdateScreensSize(gameRECT);
-                game_rect = gameRECT;
+                UpdateScreensSize(game_rect);
                 gameWindowIsValidResalution = true;
             }
             else

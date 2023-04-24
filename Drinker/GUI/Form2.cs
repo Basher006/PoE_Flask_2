@@ -95,6 +95,11 @@ namespace Drinker.GUI
             UpdateRunButton();
         }
 
+        //private void UsePausaChange(bool pausa)
+        //{
+        //    OnUsePausaChange?.Invoke(pausa);
+        //}
+
         private void UpdateRunButton()
         {
             if (flaskOnRun)

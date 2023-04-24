@@ -388,26 +388,32 @@ namespace FlaskSetup
         private void FlaskScreenUpdate()
         {
             RECT gameRECT = BotFW.BotFW.GetGameRect("Path of Exile");
-            if (gameRECT.Width == 1920 && gameRECT.Height >= 1050)
+            //if (gameRECT.Width == 1920 && gameRECT.Height >= 1050)
+            //{
+            RECT flaskRECT;
+            Bitmap newscreen;
+            if (gameRECT.Height == 1050)
             {
-                RECT flaskRECT;
-                Bitmap newscreen;
-                if (gameRECT.Height == 1050)
-                {
-                    flaskRECT = new RECT(gameRECT.X + 292, 947, 217, 99);
-                     newscreen = new Bitmap(flaskRECT.Width, flaskRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                }
-                else
-                {
-                    flaskRECT = new RECT(gameRECT.X + 306, 973, 230, 105);
+                flaskRECT = new RECT(gameRECT.X + 292, 947, 217, 99);
                     newscreen = new Bitmap(flaskRECT.Width, flaskRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                }
-                BotFW.BotFW.GetScreen(flaskRECT, newscreen);
-                Mat assdf = newscreen.ToMat();
-                flasksScreenIMG.Image.Dispose();
-                assdf.Save("FlaskSetupScreen\\FlaskSetupScreen.png");
-                LoadFlaskScreen();
             }
+            else if (gameRECT.Height == 1080)
+            {
+                flaskRECT = new RECT(gameRECT.X + 306, 973, 230, 105);
+                newscreen = new Bitmap(flaskRECT.Width, flaskRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            }
+            else
+            {
+                flaskRECT = new RECT(gameRECT.X + 273, gameRECT.Y + 889, 203, 92);
+                newscreen = new Bitmap(flaskRECT.Width, flaskRECT.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            }
+
+            BotFW.BotFW.GetScreen(flaskRECT, newscreen);
+            Mat assdf = newscreen.ToMat();
+            flasksScreenIMG.Image.Dispose();
+            assdf.Save("FlaskSetupScreen\\FlaskSetupScreen.png");
+                LoadFlaskScreen();
+            //}
         }
 
         private void LoadFlaskScreen()

@@ -5,14 +5,37 @@ using System.Linq;
 
 namespace Drinker.BotLogic.GameClientContext
 {
+
+    public struct PoeResalution
+    {
+        public int WIDTH;
+        public int HEIGHT;
+        public string Dicription;
+
+        public PoeResalution(int height, int width, string dicription)
+        {
+            WIDTH = width;
+            HEIGHT = height;
+            Dicription = dicription;
+        }
+
+        public override string ToString()
+        {
+            return Dicription;
+        }
+    }
+
     internal static class PoeInteraction
     {
         public const string GAME_CLIENT_NAME = "Path of Exile";
-        private static readonly string logFolder = "logs\\Client.txt";
         public static readonly string correctFileName = "Client.txt";
 
-        public static readonly int[] ACCEPT_SCREEN_HEIGHT = new int[] { 1050, 1080 };
-        public static readonly int[] ACCEPT_SCREEN_WIDTH = new int[] { 1920 };
+        public static readonly PoeResalution[] ACCEPT_SCREEN_RES = { new PoeResalution(1050, 1920, "1920 x 1050"), new PoeResalution(1080, 1920, "1920 x 1080"), new PoeResalution(983, 1280, "1280 x 980") };
+
+
+        private static readonly string logFolder = "logs\\Client.txt";
+        private static readonly string registryKey_for_PoeInstallPath = "SOFTWARE\\GrindingGearGames\\Path of Exile";
+        private static readonly string registryValue_for_PoeInstallPath = "InstallLocation";
 
         public static RECT GetGameRect()
         {
@@ -27,9 +50,16 @@ namespace Drinker.BotLogic.GameClientContext
 
         public static bool GameWindowIsValideResolution(RECT gameRECT)
         {
-            return ACCEPT_SCREEN_HEIGHT.Contains(gameRECT.Height) && ACCEPT_SCREEN_WIDTH.Contains(gameRECT.Width);
-        }
+            foreach (var scr_res in ACCEPT_SCREEN_RES)
+            {
+                if (gameRECT.Width == scr_res.WIDTH && gameRECT.Height == scr_res.HEIGHT)
+                {
+                    return true; 
+                }
+            }
 
+            return false;
+        }
 
         public static bool TryGetPOELogFolder(out string logPath)
         {
@@ -50,11 +80,11 @@ namespace Drinker.BotLogic.GameClientContext
         private static bool TryGetPOEInstallPathFromRegistry(out string path)
         {
             path = "";
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\GrindingGearGames\\Path of Exile"))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registryKey_for_PoeInstallPath))
             {
                 if (key != null)
                 {
-                    object o = key.GetValue("InstallLocation");
+                    object o = key.GetValue(registryValue_for_PoeInstallPath);
                     if (o != null)
                     {
                         path = (string)o;

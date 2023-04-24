@@ -13,13 +13,33 @@ namespace Drinker.DataGrab
     }
     internal static class NumbersFinder
     {
-        internal static readonly RECT hp_rect = new RECT(60, 760, 200, 120);
+        internal static readonly RECT hp_rect = new RECT(60, 760, 240, 120);
         internal static readonly RECT mp_rect = new RECT(1719, 760, 200, 120);
+
+        internal static readonly Point hp_offset = new Point(0, -190);
+        internal static readonly Point mp_offset = new Point(200, -190);
 
         private static readonly Point numbersOffset = new Point(58, 17);
         private static readonly MCvScalar numbersMask_lower = new MCvScalar(191, 209, 197);
         private static readonly MCvScalar numbersMask_upper = new MCvScalar(256, 256, 256);
 
+        internal static RECT Get_Hp_ScreenArea(int screen_W, int screen_H)
+        {
+            return new RECT(
+                hp_offset.X,
+                screen_H + hp_offset.Y - hp_rect.Height,
+                hp_rect.Width,
+                hp_rect.Height);
+        }
+
+        internal static RECT Get_Mp_ScreenArea(int screen_W, int screen_H)
+        {
+            return new RECT
+                (screen_W - mp_offset.X,
+                screen_H + mp_offset.Y - mp_rect.Height,
+                mp_rect.Width,
+                mp_rect.Height);
+        }
 
         internal static bool TryFindNumbers(Mat screen, ImagesSetup templates, out CurMax_Numbers curMax_Numbers)
         {
@@ -52,6 +72,7 @@ namespace Drinker.DataGrab
             result_img.Dispose();
             return sortedNumbers;
         }
+
         private static List<FindedNumber> GetAll_RawNumbers(Mat img, Template[] numbers)
         {
             List<FindedNumber> numbersList = new List<FindedNumber>();
