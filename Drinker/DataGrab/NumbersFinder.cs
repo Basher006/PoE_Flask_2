@@ -19,7 +19,7 @@ namespace Drinker.DataGrab
         internal static readonly Point hp_offset = new Point(0, -190);
         internal static readonly Point mp_offset = new Point(200, -190);
 
-        private static readonly Point numbersOffset = new Point(58, 17);
+        private static readonly Point numbersOffset = new Point(50, 17);
         private static readonly MCvScalar numbersMask_lower = new MCvScalar(191, 209, 197);
         private static readonly MCvScalar numbersMask_upper = new MCvScalar(256, 256, 256);
 
@@ -41,10 +41,16 @@ namespace Drinker.DataGrab
                 mp_rect.Height);
         }
 
-        internal static bool TryFindNumbers(Mat screen, ImagesSetup templates, out CurMax_Numbers curMax_Numbers)
+        internal static bool TryFindNumbers(Mat screen, ImagesSetup templates, out CurMax_Numbers curMax_Numbers, bool es = false)
         {
             curMax_Numbers = new CurMax_Numbers();
-            Point slash_location = SlashFinder.FindSlash(screen, templates.SlashIMG);
+            Point slash_location;
+            if (es)
+                slash_location = SlashFinder.Find_ES_Slash(screen, templates.SlashIMG);
+            else
+                slash_location = SlashFinder.Find_HP_or_MP_Slash(screen, templates.SlashIMG);
+
+
             if (slash_location.X == -1)
                 return false;
 
@@ -56,6 +62,17 @@ namespace Drinker.DataGrab
             curMax_Numbers.Cur = cur;
             curMax_Numbers.Max = max;
             return true;
+        }
+
+        internal static bool TryFind_ES_Numbers(Mat lifeScreen, Mat manaScreen, ImagesSetup templates, out CurMax_Numbers curMax_Numbers)
+        {
+            if (SlashFinder.EnergyShieldIsCoverLife(lifeScreen, templates.SlashIMG))
+            {
+                return TryFindNumbers(lifeScreen, templates, out curMax_Numbers, es:true);
+            }
+            else
+                return TryFindNumbers(manaScreen, templates, out curMax_Numbers, es:true);
+
         }
 
         private static int GetNumbersLine(Mat screen, Point slash_location, ImagesSetup templates, bool forMax)

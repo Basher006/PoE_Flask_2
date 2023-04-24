@@ -1,7 +1,6 @@
 ﻿using BotFW.lib;
 using Microsoft.Win32;
 using System.IO;
-using System.Linq;
 
 namespace Drinker.BotLogic.GameClientContext
 {
@@ -30,7 +29,7 @@ namespace Drinker.BotLogic.GameClientContext
         public const string GAME_CLIENT_NAME = "Path of Exile";
         public static readonly string correctFileName = "Client.txt";
 
-        public static readonly PoeResalution[] ACCEPT_SCREEN_RES = { new PoeResalution(1050, 1920, "1920 x 1050"), new PoeResalution(1080, 1920, "1920 x 1080"), new PoeResalution(983, 1280, "1280 x 980") };
+        public static readonly PoeResalution[] ACCEPT_SCREEN_RES = { new PoeResalution(1050, 1920, "1920 x 1027"), new PoeResalution(1080, 1920, "1920 x 1080"), new PoeResalution(983, 1280, "1280 x 960") };
 
 
         private static readonly string logFolder = "logs\\Client.txt";

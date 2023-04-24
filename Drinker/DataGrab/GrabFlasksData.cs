@@ -7,20 +7,24 @@ namespace Drinker.DataGrab
         public FlasksState FlasksState;
         public CurMax_Numbers CharHP;
         public CurMax_Numbers CharMP;
+        public CurMax_Numbers CharES;
 
         public bool HP_isFinded;
         public bool MP_isFinded;
         public bool FS_isFinded;
+        public bool ES_isFinded;
 
-        public FlasksData(FlasksState state, CurMax_Numbers charHP, CurMax_Numbers charMP, bool HP_isFinded = true, bool MP_isFinded = true, bool FS_isFinded = true)
+        public FlasksData(FlasksState state, CurMax_Numbers charHP, CurMax_Numbers charMP, CurMax_Numbers charES, bool HP_isFinded = true, bool MP_isFinded = true, bool FS_isFinded = true, bool ES_isFinded = true)
         {
             FlasksState = state;
             CharHP = charHP;
             CharMP = charMP;
+            CharES = charES;
 
             this.HP_isFinded = HP_isFinded;
             this.MP_isFinded = MP_isFinded;
             this.FS_isFinded = FS_isFinded;
+            this.ES_isFinded = ES_isFinded;
         }
 
         public override string ToString()
@@ -57,6 +61,9 @@ namespace Drinker.DataGrab
 
                 MP_isFinded = NumbersFinder.TryFindNumbers(mp_area, templates, out CurMax_Numbers charMP),
                 CharMP = charMP,
+
+                ES_isFinded = NumbersFinder.TryFind_ES_Numbers(hp_area, mp_area, templates, out CurMax_Numbers charES),
+                CharES = charES,
 
                 FS_isFinded = FlaskStateFinder.TryFindFlaskState(screen, out FlasksState flasksState),
                 FlasksState = flasksState

@@ -88,6 +88,7 @@ namespace Drinker
             int UPS;
             string charHP;
             string charMP;
+            string charES;
             gameWindowIsActive = false;
             gameWindowIsActive_old = false;
             while (true)
@@ -122,9 +123,9 @@ namespace Drinker
                             }
 
                             // TODO
-                            // 1. Добавить возможность сохранять и загружать пресеты настроек. 
-                            // 2. определение енергощита,
-                            // 3. возможность настраивать использование скилов
+                            // 1. Добавить возможность сохранять и загружать пресеты настроек. (-)
+                            // 2. определение енергощита, (+)
+                            // 3. возможность настраивать использование скилов (-)
 
                             res = GrabFlasksData.GrabData(screen);
                             PoeLogReader.Update();
@@ -139,6 +140,8 @@ namespace Drinker
                             
                             if (gameWindowIsActive && !Pause)
                                 FlasksUse.UseFlasks(res);
+                            else
+                                Thread.Sleep(100);
 
                             watch_run.Stop();
 
@@ -147,8 +150,9 @@ namespace Drinker
 
                             charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
                             charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
+                            charES = res.ES_isFinded ? res.CharES.ToString() : "NA";
 
-                            GUIRuner.form2.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
+                            GUIRuner.form2.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP, charES);
                         }
                     }
 
@@ -161,9 +165,10 @@ namespace Drinker
                         UPS = 0;
                     charHP = res.HP_isFinded ? res.CharHP.ToString() : "NA";
                     charMP = res.MP_isFinded ? res.CharMP.ToString() : "NA";
+                    charES = res.ES_isFinded ? res.CharES.ToString() : "NA";
 
                     if (!GUIRuner.form2.FormIsClosing)
-                        GUIRuner.form2?.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP);
+                        GUIRuner.form2?.Invoke(GUIRuner.form2.OnUpdateStatusBar, UPS, charHP, charMP, charES);
                 }
                 else
                     Thread.Sleep(100);

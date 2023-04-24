@@ -37,6 +37,7 @@
             this.showOverlay_checkBox = new System.Windows.Forms.CheckBox();
             this.autoPayse_chekbox = new System.Windows.Forms.CheckBox();
             this.POEPath_lable = new System.Windows.Forms.Label();
+            this.charES_statusText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -142,11 +143,24 @@
             this.POEPath_lable.Text = "Указать путь к игре..";
             this.POEPath_lable.Click += new System.EventHandler(this.POEPath_lable_Click);
             // 
+            // charES_statusText
+            // 
+            this.charES_statusText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.charES_statusText.AutoSize = true;
+            this.charES_statusText.BackColor = System.Drawing.Color.Silver;
+            this.charES_statusText.Location = new System.Drawing.Point(12, 122);
+            this.charES_statusText.MinimumSize = new System.Drawing.Size(80, 0);
+            this.charES_statusText.Name = "charES_statusText";
+            this.charES_statusText.Size = new System.Drawing.Size(80, 13);
+            this.charES_statusText.TabIndex = 9;
+            this.charES_statusText.Text = "ES: 9999/9999";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(249, 160);
+            this.Controls.Add(this.charES_statusText);
             this.Controls.Add(this.POEPath_lable);
             this.Controls.Add(this.autoPayse_chekbox);
             this.Controls.Add(this.showOverlay_checkBox);
@@ -177,5 +191,6 @@
         private System.Windows.Forms.CheckBox showOverlay_checkBox;
         private System.Windows.Forms.CheckBox autoPayse_chekbox;
         private System.Windows.Forms.Label POEPath_lable;
+        private System.Windows.Forms.Label charES_statusText;
     }
 }

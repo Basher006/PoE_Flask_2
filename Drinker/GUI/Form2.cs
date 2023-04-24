@@ -1,10 +1,12 @@
 ﻿using Drinker.BotLogic.GameClientContext;
+using Drinker.DataGrab;
 using Drinker.Properties;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using static Drinker.DataGrab.GrabFlasksData;
 
 namespace Drinker.GUI
 {
@@ -12,7 +14,7 @@ namespace Drinker.GUI
     {
         public delegate void StartStopButtonChanger(bool run);
         public StartStopButtonChanger OnStartStopChange;
-        public delegate void UpdateStatusBarChanger(int UPS, string charHP, string charMP);
+        public delegate void UpdateStatusBarChanger(int UPS, string charHP, string charMP, string charES);
         public UpdateStatusBarChanger OnUpdateStatusBar;
         public delegate void ChangeOverlay(bool checkBoxIsCheked);
         public ChangeOverlay OnChangeOverlay;
@@ -37,6 +39,7 @@ namespace Drinker.GUI
         private static readonly string UPS_statusText_prefix = "UPS: ";
         private static readonly string charHP_statusText_prefix = "HP: ";
         private static readonly string charMP_statusText_prefix = "MP: ";
+        private static readonly string charES_statusText_prefix = "ES: ";
 
         private static readonly string noLogFolderPathText = "Указать путь к игре..";
         private static string poeLogFilePath;
@@ -122,16 +125,30 @@ namespace Drinker.GUI
             }
         }
 
-        private void UpdateStatusBar(int UPS, string charHP, string charMP)
+        private void UpdateStatusBar(int UPS, string charHP, string charMP, string charES)
         {
             string UPS_statusText_temp = UPS_statusText_prefix + UPS.ToString();
             string charHP_statusText_temp = charHP_statusText_prefix + charHP;
             string charMP_statusText_temp = charMP_statusText_prefix + charMP;
+            string charES_statusText_temp = charES_statusText_prefix + charES;
 
             UPS_statusText.Text = UPS_statusText_temp;
             charHP_statusText.Text = charHP_statusText_temp;
             charMP_statusText.Text = charMP_statusText_temp;
+            charES_statusText.Text = charES_statusText_temp;
         }
+        //private void UpdateStatusBar(int UPS, FlasksData flasksData) //FlasksData flasksData
+        //{
+        //    string UPS_statusText_temp = UPS_statusText_prefix + UPS.ToString();
+        //    string charHP_statusText_temp = charHP_statusText_prefix + flasksData.CharHP.ToString();
+        //    string charMP_statusText_temp = charMP_statusText_prefix + flasksData.CharMP.ToString();
+        //    string charES_statusText_temp = charES_statusText_prefix + flasksData.CharES.ToString();
+
+        //    UPS_statusText.Text = UPS_statusText_temp;
+        //    charHP_statusText.Text = charHP_statusText_temp;
+        //    charMP_statusText.Text = charMP_statusText_temp;
+        //    charES_statusText.Text = charES_statusText_temp;
+        //}
 
         private void StartStop_button_Click(object sender, EventArgs e)
         {
