@@ -15,14 +15,19 @@ namespace Drinker.BotLogic
         public UpdateFlaskSetUp UpdFlaskSetUp_arr;
         public int flaskNumber;
 
-
-        private Timer flaskTimer;
-
         public FlaskSettings setUp;
+
 
         private static readonly string activationType_HP = FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.HP];
         private static readonly string activationType_MP = FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.MP];
-        private static readonly string activationType_KD = FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.KD];
+        private static readonly string activationType_ES = FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.ES];
+        private static readonly string activationType_KD = FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.CD];
+        private static readonly string activationType_One = FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.One];
+
+
+        private Timer flaskTimer;
+        private Timer oneUseTimer;
+        private static readonly int oneUseTimer_tr = 1000; // one second
 
 
         public FlaskUseContext(FlaskSettings setUp, int flaskNumber) 
@@ -34,6 +39,7 @@ namespace Drinker.BotLogic
             Upd = new UpdDelegate(Update);
 
             flaskTimer = new Timer();
+            oneUseTimer = new Timer();
         }
 
         public void Update(FlasksData data) 
@@ -61,10 +67,19 @@ namespace Drinker.BotLogic
             {
                 result = ChekMP(data);
             }
+            else if (setUp.ActivationType == activationType_ES)
+            {
+                result = ChekES(data);
+            }
             else if (setUp.ActivationType == activationType_KD)
             {
                 result = ChekState(data);
             }
+            else if (setUp.ActivationType == activationType_One)
+            {
+                result = ChekOneUse(data);
+            }
+
             return result;
         }
 
@@ -77,13 +92,11 @@ namespace Drinker.BotLogic
         public void UpdateSetUp(FlaskSettings setUp) 
         {
             this.setUp = setUp;
-            //Console.WriteLine($"flask {flaskNumber} has updated");
         }
         public void UpdateSetUp(FlasksSetupData setUp)
         {
             var setUpArr = setUp.ToArray();
             UpdateSetUp(setUpArr[flaskNumber - 1]);
-            //this.setUp = setUpArr[flaskNumber-1];
         }
 
         private bool ChekHP(FlasksData data)
@@ -106,9 +119,37 @@ namespace Drinker.BotLogic
             return false;
         }
 
-        private bool ChekState(FlasksData data)
+        private bool ChekES(FlasksData data)
+        {
+            int charESpercent = CalcCharHP_percent(data.CharES.Cur, data.CharES.Max);
+            bool ststs = ChekState(data);
+            bool sfsdv = data.ES_isFinded && charESpercent <= setUp.ActivatePercent && ststs;
+            if (sfsdv)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool ChekOneUse(FlasksData data)
         {
             var flaskState = data.FlasksState.ToArray()[flaskNumber-1];
+            if (flaskState >= FlasksMetrics.MINIMUM_STATE_PERCENT_WHEN_USE_FLASK && data.HP_isFinded && data.FS_isFinded)
+            {
+                oneUseTimer.Upd();
+                return false;
+            }
+            else if (oneUseTimer.Chek(oneUseTimer_tr))
+            {
+                oneUseTimer.Upd();
+                return true;
+            }
+            return false;
+        }
+
+        private bool ChekState(FlasksData data)
+        {
+            var flaskState = data.FlasksState.ToArray()[flaskNumber - 1];
             if (flaskState <= FlasksMetrics.MINIMUM_STATE_PERCENT_WHEN_USE_FLASK && data.HP_isFinded && data.FS_isFinded)
             {
                 return true;

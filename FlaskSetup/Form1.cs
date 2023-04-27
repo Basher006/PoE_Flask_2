@@ -261,7 +261,9 @@ namespace FlaskSetup
 
         private void SetEnableFlagsOnElements(GUIElements_FlaskSetUp flaskElement)
         {
-            if (flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.HP] || flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.MP])
+            if (flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.HP] ||
+                flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.MP] ||
+                flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.ES])
             {
                 flaskElement.ActivatePercentText.Enabled = true;
                 flaskElement.ActivatePercentBar.Enabled = true;
@@ -274,7 +276,7 @@ namespace FlaskSetup
                     flaskElement.FlaskBox.BorderColor = groupColors[index];
 
             }
-            else if (flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.KD])
+            else if (flaskElement.ActivarionType.Text == FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.CD])
             {
                 flaskElement.ActivatePercentText.Enabled = false;
                 flaskElement.ActivatePercentBar.Enabled = false;

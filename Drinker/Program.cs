@@ -137,7 +137,7 @@ namespace Drinker
                             {
                                 Pause = false;
                             }
-                            
+                            //gameWindowIsActive = true;
                             if (gameWindowIsActive && !Pause)
                                 FlasksUse.UseFlasks(res);
                             else

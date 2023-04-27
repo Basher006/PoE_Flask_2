@@ -43,7 +43,7 @@ namespace Drinker.BotLogic
             }
                 
 
-            if (flasksGroup[currentFlaskInSequence].setUp.ActivationType != FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.KD])
+            if (flasksGroup[currentFlaskInSequence].setUp.ActivationType != FlasksMetrics.ActivatorDropBoxValues[(int)FlasksMetrics.ActivationType.CD])
             {
                 if (flasksGroup[currentFlaskInSequence].FlaskIsNeedUsed(data) && flasksGroup[previusFlaskInSequence].FlaskChekTimer())
                 {

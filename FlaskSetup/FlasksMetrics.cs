@@ -23,7 +23,7 @@ namespace FlaskSetup
         public const int FLASKS_COUNT = 5;
         public const int MINIMUM_STATE_PERCENT_WHEN_USE_FLASK = 5;
 
-        public static readonly string[] ActivatorDropBoxValues = new string[] { "HP", "MP", "По Кд", "Нет" };
+        public static readonly string[] ActivatorDropBoxValues = new string[] { "Нет", "HP", "Мана", "ES", "По Кд", "1 раз" };
         public static readonly string[] GroupDropBoxValues = new string[] { "Нет", "Group1", "Group2" };
 
         public static readonly FlaskHotkey[] AlowedHotkeys = { 
@@ -64,11 +64,13 @@ namespace FlaskSetup
         }
 
         public enum ActivationType
-        {
-            HP = 0,
-            MP = 1,
-            KD = 2,
-            Not = 3
+        {//{ "Нет", "HP", "Мана", "ES", "По Кд", "1 раз" };
+            Not = 0,
+            HP = 1,
+            MP = 2,
+            ES = 3,
+            CD = 4,
+            One = 5,
         }
         public enum groupDB
         {

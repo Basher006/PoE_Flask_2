@@ -31,8 +31,9 @@ namespace Drinker.DataGrab
         {
             string charHP = HP_isFinded ? CharHP.ToString() : "NA";
             string charMP = MP_isFinded ? CharMP.ToString() : "NA";
+            string charES = ES_isFinded ? CharES.ToString() : "NA";
             string charFS = FS_isFinded ? FlasksState.ToString() : "NA";
-            return $" Life {charHP}, Mana: {charMP}, Flasks state: {charFS}";
+            return $" Life {charHP}, Mana: {charMP}, ES: {charES}, Flasks state: {charFS}";
         }
     }
     internal static class GrabFlasksData
